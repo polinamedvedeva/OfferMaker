@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Random;
 
 import javax.xml.bind.JAXBException;
@@ -39,6 +40,11 @@ public class CreationCommBuilder {
 	
 	public int assemble(String resultPath, HashMap<String, String> values, ArrayList<String> moduleNames, ArrayList<String> modulePrices) {
 		long startTime = System.currentTimeMillis();
+		
+		int summ = parsePrice(values, modulePrices);
+		String ssumm = String.valueOf(summ);
+		
+		values.put("pholdersumm", ssumm.substring(0, ssumm.length()-3) + " " + ssumm.substring(ssumm.length()-3));
 		
 		String picFolder = root + File.separator + "config" + File.separator + "regions" + File.separator + "pic" + File.separator;
 		
@@ -139,6 +145,33 @@ public class CreationCommBuilder {
 		System.out.println("Готово; " + (System.currentTimeMillis() - startTime) + " мс.");
 		return 0;
 		
+	}
+	
+	private int parsePrice(HashMap<String, String> values, ArrayList<String> modulePrices){
+		int result = 0;
+		for(Entry<String, String> ent : values.entrySet()){
+			int t;
+			try{
+				t = Integer.valueOf(ent.getValue().replace(" ", ""));
+				System.out.println(ent.getKey() + ":" + ent.getValue() + ":" + t);
+			}catch(NumberFormatException e){
+				t = 0;
+				System.out.println(ent.getKey() + ": NOPE");
+			}
+			result += t;
+		}
+		
+		for(String s : modulePrices){
+			int t;
+			try{
+				t = Integer.valueOf(s.replace(" ", ""));
+			}catch(NumberFormatException e){
+				t = 0;
+			}
+			result += t;
+		}
+		
+		return result;
 	}
 	
 	private static void LOG(String message){

@@ -43,6 +43,15 @@
     <url-pattern>/creationupload</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+    <servlet-name>WebEditServlet</servlet-name>
+    <servlet-class>manageredit.ManagerEditServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>WebEditServlet</servlet-name>
+    <url-pattern>/manageredit</url-pattern>
+  </servlet-mapping>
+  
   
   <servlet-mapping>
     <servlet-name>default</servlet-name>

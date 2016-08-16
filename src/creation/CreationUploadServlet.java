@@ -23,6 +23,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.MimeUtility;
 
 
+@SuppressWarnings("restriction")
 public class CreationUploadServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Random random = new Random();

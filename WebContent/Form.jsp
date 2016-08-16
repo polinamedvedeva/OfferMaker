@@ -57,7 +57,7 @@ String typeAttrib = request.getParameter("type");
 							String temp = "";
 							for(Entry<String, Region> reg : regionList.entrySet()){
 								temp = reg.getKey();
-								out.println("<option value=\"" + temp + "\"" + (temp.equals(region) ? " selected=\"selected\"" : "") + ">" + temp + "</option>");
+								out.println("<option value=\"" + temp + "\"" + (temp.equals(region) ? " selected=\"selected\"" : "") + ">" + reg.getValue().getName() + "</option>");
 							}
 						}
 					out.println("</select>");
@@ -252,10 +252,6 @@ String typeAttrib = request.getParameter("type");
 			<div class="content"><input class="input" size="85" type="text" name="test" value="1 500"/></div>
 			<div class="header"><span>Ввод проекта в эксплуатацию</span></div>
 			<div class="content"><input class="input" size="85" type="text" name="enter" value="800"/></div>
-			
-			<div class="header"><h3>Итого</h3></div>
-			<div class="content"><input class="input" size="85" type="text" name="summ" value="26 500"/></div>
-			
 			
 			<div class="footer">
 				<input class="button" type="submit" value="Делать" />

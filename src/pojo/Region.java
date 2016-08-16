@@ -1,16 +1,20 @@
 package pojo;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class Region {
-	private static HashMap<String, Region> regionList;
-	
+	private String nick;
 	private String name;
 	private String address;
 	private String phones;
@@ -19,6 +23,15 @@ public class Region {
 	
 	public Region() {
 		super();
+		this.managers = new ArrayList<>();
+	}
+	
+	public String getNick() {
+		return nick;
+	}
+
+	public void setNick(String nick) {
+		this.nick = nick;
 	}
 	
 	public String toString(){
@@ -66,10 +79,6 @@ public class Region {
 	}
 	
 	public static HashMap<String, Region> loadRegions(String dirPath) throws IOException{
-		if(regionList != null){
-			return regionList;
-		}
-		
 		File folder = new File(dirPath);
 		if(!folder.exists()){
 			return null;
@@ -91,12 +100,11 @@ public class Region {
 						BufferedReader bReader = new BufferedReader(isr);
 						
 						Region region = new Region();
-						region.setName(bReader.readLine()); //fileEntry.getName().replace(".txt", "")
+						region.setNick(fileEntry.getName().replace(".txt", ""));
+						region.setName(bReader.readLine()); //
 						region.setAddress(bReader.readLine());
 						region.setPhones(bReader.readLine());
 						region.setSite(bReader.readLine());
-						
-						
 						
 						List<Manager> managers = new ArrayList<>();
 						
@@ -114,14 +122,62 @@ public class Region {
 						
 						region.setManagers(managers);
 						
-						result.put(region.getName(), region);
+						result.put(region.getNick(), region);
 					}
 				}
 			}
 		}
-		regionList = result;
-		return regionList;
+		return result;
 	}
-
+	
+	public static void updateRegion(Region r, String dirPath){
+		
+		File writeFile = new File(dirPath + File.separator + r.getNick() + ".txt");
+		FileOutputStream fos = null;
+		try {
+			fos = new FileOutputStream(writeFile);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		OutputStreamWriter osw = null;
+		try {
+			osw = new OutputStreamWriter(fos, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		BufferedWriter bw = new BufferedWriter(osw);
+		
+		try {
+			bw.write(r.getName() + "\n");
+			bw.write(r.getAddress() + "\n");
+			bw.write(r.getPhones() + "\n");
+			bw.write(r.getSite() + "\n");
+			
+			for(Manager m : r.getManagers()){
+				bw.write(m.getNick() + "\n");
+				bw.write(m.getName() + "\n");
+				bw.write(m.getPosition() + "\n");
+				bw.write(m.getEmail() + "\n");
+				bw.write(m.getPhonenumber() + "\n");
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			bw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static boolean deleteRegion(String nick, String dirPath){
+		File f = new File(dirPath + File.separator + nick + ".txt");
+		return f.delete();
+	}
 
 }
