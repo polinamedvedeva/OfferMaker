@@ -2,9 +2,11 @@ package manageredit;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -24,6 +26,7 @@ public class ManagerEditServlet extends HttpServlet{
 	 * 
 	 */
 	private static final long serialVersionUID = -4106855189225345261L;
+	private Random random = new Random();
 
 	
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -35,7 +38,45 @@ public class ManagerEditServlet extends HttpServlet{
     }
 	
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		HashMap<String, String> parameters = getParameters(req);
+		HashMap<String, String> parameters = new HashMap<>();
+		boolean isMultipart = ServletFileUpload.isMultipartContent(req);
+		if (!isMultipart) {
+			resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+		DiskFileItemFactory factory = new DiskFileItemFactory();
+		factory.setSizeThreshold(1024*1024);
+		File tempDir = (File)getServletContext().getAttribute("javax.servlet.context.tempdir");
+		factory.setRepository(tempDir);
+		ServletFileUpload upload = new ServletFileUpload(factory);
+		upload.setSizeMax(1024 * 1024 * 10);
+		upload.setHeaderEncoding("utf-8");
+		
+		File mngPic = null;
+		
+		try {
+			List<FileItem> items = upload.parseRequest(req);
+			Iterator<FileItem> iter = items.iterator();
+			
+			while (iter.hasNext()) {
+			    FileItem item = (FileItem) iter.next();
+ 
+			    if (item.isFormField()) {
+			    	//если принимаемая часть данных является полем формы
+			    	processFormField(item, parameters);
+
+			    } else {
+			    	//в противном случае рассматриваем как файл
+			    	mngPic = processUploadedFile(item);
+			    }
+			}			
+		} catch (Exception e) {
+			e.printStackTrace();
+			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			return;
+		}
+		
+		
 		String regionnick = parameters.get("regionnick");
 		if(regionnick == null){
 			doGet(req, resp);
@@ -76,7 +117,18 @@ public class ManagerEditServlet extends HttpServlet{
 			if(existedManager != null){
 				if(delete){
 					managers.remove(existedManager); //удаляем, если стояла галка. иначе обновляем инфу
+					File pic = new File(getServletContext().getRealPath(
+							"config" + File.separator + "regions" + File.separator
+							+ "pic" + File.separator + managernick + ".jpeg"));
+					if(pic.exists())
+						pic.delete();
 				}else{
+					if(mngPic != null){
+						File destination = new File(mngPic.getParentFile().getAbsolutePath() + File.separator + managernick + ".jpeg");
+						if(destination.exists())
+							destination.delete();
+						mngPic.renameTo(destination);
+					}
 					existedManager.setName(name);
 					existedManager.setPosition(pos);
 					existedManager.setEmail(mail);
@@ -90,6 +142,12 @@ public class ManagerEditServlet extends HttpServlet{
 				existedManager.setEmail(mail);
 				existedManager.setPhonenumber(phone);
 				managers.add(existedManager);
+				if(mngPic != null){
+					File destination = new File(mngPic.getParentFile().getAbsolutePath() + File.separator + managernick + ".jpeg");
+					if(destination.exists())
+						destination.delete();
+					mngPic.renameTo(destination);
+				}
 			}
 		}
 		
@@ -106,40 +164,22 @@ public class ManagerEditServlet extends HttpServlet{
 		return null;
 	}
 	
-	private HashMap<String, String> getParameters(HttpServletRequest request){
-		HashMap<String, String> values = new HashMap<>();
-		
-		boolean isMultipart = ServletFileUpload.isMultipartContent(request);
-		if (!isMultipart) {
-			System.out.println(HttpServletResponse.SC_BAD_REQUEST);
-			return null;
-		}
-		DiskFileItemFactory factory = new DiskFileItemFactory();
-		factory.setSizeThreshold(1024*1024);
-		File tempDir = (File)getServletContext().getAttribute("javax.servlet.context.tempdir");
-		factory.setRepository(tempDir);
-		ServletFileUpload upload = new ServletFileUpload(factory);
-		upload.setSizeMax(1024 * 1024 * 10);
-		upload.setHeaderEncoding("utf-8");
-		
-		try {
-			List<FileItem> items = upload.parseRequest(request);
-			Iterator<FileItem> iter = items.iterator();
-			
-			while (iter.hasNext()) {
-			    FileItem item = (FileItem) iter.next();
- 
-			    if (item.isFormField()) {
-			    	String fieldName = item.getFieldName();
-					String fieldValue = item.getString("utf-8");
-					values.put(fieldName, fieldValue);
-				}
-			}			
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			return null;
-		}
-		return values;
+	private File processUploadedFile(FileItem item) throws Exception {
+		File uploadedFile = null;
+		String path;
+		do{
+			path = getServletContext().getRealPath("config" + File.separator + "regions" + File.separator + "pic"
+					+ File.separator + random.nextInt());					
+			uploadedFile = new File(path);		
+		}while(uploadedFile.exists());
+		uploadedFile.createNewFile();
+		item.write(uploadedFile);
+		return uploadedFile;
+	}
+	
+	private void processFormField(FileItem item, HashMap<String, String> values ) throws UnsupportedEncodingException {
+		String fieldName = item.getFieldName();
+		String fieldValue = item.getString("utf-8");
+		values.put(fieldName, fieldValue);
 	}
 }

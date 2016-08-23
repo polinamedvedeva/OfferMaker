@@ -108,6 +108,10 @@ HEADER
 	padding: 0px 30px 0px 35px;
 }
 
+.region-form .headermng {
+	display : inline;
+}
+
 .region-form .header h1 {
 	font-family: 'Roboto Condensed', serif;
 	font-weight: 300;
@@ -168,6 +172,23 @@ CONTENT
 	padding: 0 30px 10px 30px;
 }
 
+.region-form .contentmng {
+	display : inline;
+}
+
+
+.region-form .mngpic{
+	padding: 0 30px 10px 30px;
+	max-height: auto; 
+    max-width: 200px; 
+    display : inline;
+    float: right;
+}
+.region-form .mngpic img{
+	height: 200px; 
+    width: auto; 
+}
+
 /* Input field */
 .region-form .content .input {
 	width: 100%;
@@ -189,6 +210,11 @@ CONTENT
 	-webkit-box-shadow: inset 0 1px 3px rgba(0,0,0,0.50);
 }
 
+.region-form .contentmng .input {
+	width: 470px;
+}
+
+
 .region-form .content .input-disabled {
 	width: 100%;
 	padding: 6px 10px;
@@ -208,6 +234,11 @@ CONTENT
 	-moz-box-shadow: inset 0 1px 3px rgba(0,0,0,0.50);
 	-webkit-box-shadow: inset 0 1px 3px rgba(0,0,0,0.50);
 }
+
+.region-form .contentmng .input-disabled {
+	width: 470px;
+}
+
 
 .region-form .content .upload {
 	width: 100%;
@@ -247,6 +278,7 @@ CONTENT
 	-moz-box-shadow: inset 0 1px 2px rgba(0,0,0,0.25);
 	-webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,0.25);
 }
+
 
 .user-icon, .pass-icon {
 	width: 46px;

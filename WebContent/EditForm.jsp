@@ -12,6 +12,7 @@ Manager selectedManager = null;
     <head>
     	<%@ page pageEncoding="utf-8"%>
 		<meta charset="utf-8">
+		<meta http-equiv="Cache-Control" content="no-cache">
 		<link href="./css/style.css" rel="stylesheet">
 		<link rel="icon" href="favicon.ico" type="image/x-icon">
 		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
@@ -69,7 +70,6 @@ Manager selectedManager = null;
 			
 		<form name="commform" method="post" class="region-form" enctype="multipart/form-data">
 				<div class="header"><h2>Контакты Delta в данном регионе:</h2></div>
-				<div class="checkbox"><input type="checkbox" name="deleteRegion">Удалить регион</div>
 				<%
 					if(selectedRegion == null){%>
 						<div class="header"><span>Сокр. название региона (на латинице):</span></div>
@@ -83,6 +83,7 @@ Manager selectedManager = null;
 						<div class="header"><span>Сайт:</span></div>
 						<div class="content"><input class="input" size="85" type="text" name="deltasite" value=""/></div>
 				<%	}else{%>
+						<div class="checkbox"><input type="checkbox" name="deleteRegion">Удалить регион</div>
 						<div class="header"><span>Сокр. название региона (на латинице):</span></div>
 						<div class="content"><input class="input-disabled" size="85" type="text" name="regionnick" value="<%=selectedRegion.getNick() %>" ></div>
 						<div class="header"><span>Название региона:</span></div>
@@ -96,7 +97,11 @@ Manager selectedManager = null;
 				<%}%>
 				
 				<div class="header"><h2>Контакты МЕНЕДЖЕРА в данном регионе:</h2></div>
-				<div class="checkbox"><input type="checkbox" name="deleteManager">Удалить менеджера</div>
+				<div class="top"><div class="header"><h2>Фото:</h2></div>
+					<div class="content">	
+							<input type="file" accept="	image/jpeg" class="upload" name="managerPic"/>
+					</div>
+				</div>
 				<%
 					if(selectedManager == null){%>
 						<div class="header"><span>Ник</span></div>
@@ -110,17 +115,19 @@ Manager selectedManager = null;
 						<div class="header"><span>Телефон</span></div>
 						<div class="content"><input class="input" size="85" type="text" name="phonenumber" value=""/></div>
 				<%	}else{ %>
-						<div class="header"><span>Ник</span></div>
-						<div class="content"><input class="input-disabled" size="85" type="text" name="managernick" value="<%=selectedManager.getNick() %>"></div>
-						<div class="header"><span>Имя</span></div>
-						<div class="content"><input class="input" size="85" type="text" name="managername" value="<%=selectedManager.getName() %>"/></div>
-						<div class="header"><span>Должность</span></div>
-						<div class="content"><input class="input" size="85" type="text" name="managerposition" value="<%=selectedManager.getPosition() %>"/></div>
-						<div class="header"><span>Почта</span></div>
-						<div class="content"><input class="input" size="85" type="text" name="email" value="<%=selectedManager.getEmail() %>"/></div>
-						<div class="header"><span>Телефон</span></div>
-						<div class="content"><input class="input" size="85" type="text" name="phonenumber" value="<%=selectedManager.getPhonenumber() %>"/></div>
-				<%}%>
+						<div class="checkbox"><input type="checkbox" name="deleteManager">Удалить менеджера</div>
+						<div class="mngpic"><img alt="Photo" src="/OfferMaker/config/regions/pic/<%=selectedManager.getNick() + ".jpeg" %>"></div>
+						<div class="header headermng"><span>Ник</span></div><br>
+						<div class="content contentmng"><input class="input-disabled" size="50" type="text" name="managernick" value="<%=selectedManager.getNick() %>"></div><br>
+						<div class="header headermng"><span>Имя</span></div><br>
+						<div class="content contentmng"><input class="input" size="50" type="text" name="managername" value="<%=selectedManager.getName() %>"/></div><br>
+						<div class="header headermng"><span>Должность</span></div><br>
+						<div class="content contentmng"><input class="input" size="50" type="text" name="managerposition" value="<%=selectedManager.getPosition() %>"/></div><br>
+						<div class="header headermng"><span>Почта</span></div><br>
+						<div class="content contentmng"><input class="input" size="50" type="text" name="email" value="<%=selectedManager.getEmail() %>"/></div><br>
+						<div class="header headermng"><span>Телефон</span></div><br>
+						<div class="content contentmng"><input class="input" size="50" type="text" name="phonenumber" value="<%=selectedManager.getPhonenumber() %>"/></div>
+				<% }%>
 				<div class="footer">
 					<input class="button" type="submit" value="Добавить/Обновить" />
 				</div>
