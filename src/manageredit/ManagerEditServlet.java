@@ -167,6 +167,9 @@ public class ManagerEditServlet extends HttpServlet{
 	private File processUploadedFile(FileItem item) throws Exception {
 		File uploadedFile = null;
 		String path;
+		if(item.getSize() == 0)
+			return null;
+		
 		do{
 			path = getServletContext().getRealPath("config" + File.separator + "regions" + File.separator + "pic"
 					+ File.separator + random.nextInt());					
@@ -174,6 +177,7 @@ public class ManagerEditServlet extends HttpServlet{
 		}while(uploadedFile.exists());
 		uploadedFile.createNewFile();
 		item.write(uploadedFile);
+		
 		return uploadedFile;
 	}
 	

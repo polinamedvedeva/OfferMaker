@@ -169,24 +169,26 @@ CONTENT
 *******************/
 
 .region-form .content {
-	padding: 0 30px 10px 30px;
+	margin: 0 30px 10px 30px;
 }
 
 .region-form .contentmng {
 	display : inline;
+	width: 70%;
 }
 
 
 .region-form .mngpic{
-	padding: 0 30px 10px 30px;
-	max-height: auto; 
-    max-width: 210px; 
+	width: 30%; 
+	height: auto; 
     display : inline;
     float: right;
 }
 .region-form .mngpic img{
-	height: 200px; 
-    width: auto; 
+	width: auto; 
+	max-height: 200px;   
+	margin-left: 10px;
+	margin-right: 10px;
 }
 
 /* Input field */
@@ -211,7 +213,7 @@ CONTENT
 }
 
 .region-form .contentmng .input {
-	width: 470px;
+	width: auto;
 }
 
 
@@ -236,7 +238,7 @@ CONTENT
 }
 
 .region-form .contentmng .input-disabled {
-	width: 470px;
+	width: auto;
 }
 
 
