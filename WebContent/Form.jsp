@@ -129,14 +129,15 @@ String typeAttrib = request.getParameter("type");
 						<div class="content"><input class="input" size="85" type="text" name="phonenumber" value=""/></div>
 				<%	}else{ %>
 						<input type="hidden" name = "managernick" value=<%=selectedManager.getNick() %>>
-						<div class="header"><span>Имя</span></div>
-						<div class="content"><input class="input" size="85" type="text" name="managername" value="<%=selectedManager.getName() %>"/></div>
-						<div class="header"><span>Должность</span></div>
-						<div class="content"><input class="input" size="85" type="text" name="managerposition" value="<%=selectedManager.getPosition() %>"/></div>
-						<div class="header"><span>Почта</span></div>
-						<div class="content"><input class="input" size="85" type="text" name="email" value="<%=selectedManager.getEmail() %>"/></div>
-						<div class="header"><span>Телефон</span></div>
-						<div class="content"><input class="input" size="85" type="text" name="phonenumber" value="<%=selectedManager.getPhonenumber() %>"/></div>
+						<div class="mngpic"><img alt="Photo" src="/OfferMaker/config/regions/pic/<%=selectedManager.getNick() + ".jpeg" %>"></div>
+						<div class="header headermng"><span>Имя</span></div><br>
+						<div class="content contentmng"><input class="input" size="50" type="text" name="managername" value="<%=selectedManager.getName() %>"/></div><br>
+						<div class="header headermng"><span>Должность</span></div><br>
+						<div class="content contentmng"><input class="input" size="50" type="text" name="managerposition" value="<%=selectedManager.getPosition() %>"/></div><br>
+						<div class="header headermng"><span>Почта</span></div><br>
+						<div class="content contentmng"><input class="input" size="50" type="text" name="email" value="<%=selectedManager.getEmail() %>"/></div><br>
+						<div class="header headermng"><span>Телефон</span></div><br>
+						<div class="content contentmng"><input class="input" size="50" type="text" name="phonenumber" value="<%=selectedManager.getPhonenumber() %>"/></div>
 				<%}%>
 				<br><br>
 				<div class="header"><span>URL сайта клиента (<b>ВСЕГДА ПИСАТЬ С WWW!</b>)</span></div>
@@ -202,14 +203,15 @@ String typeAttrib = request.getParameter("type");
 					<div class="content"><input class="input" size="85" type="text" name="managerphone" value=""/></div>
 			<%	}else{ %>
 					<input type="hidden" name ="managernick" value=<%=selectedManager.getNick() %>>
-					<div class="header"><span>Имя</span></div>
-					<div class="content"><input class="input" size="85" type="text" name="managername" value="<%=selectedManager.getName() %>"/></div>
-					<div class="header"><span>Должность</span></div>
-					<div class="content"><input class="input" size="85" type="text" name="managerposition" value="<%=selectedManager.getPosition() %>"/></div>
-					<div class="header"><span>Почта</span></div>
-					<div class="content"><input class="input" size="85" type="text" name="manageremail" value="<%=selectedManager.getEmail() %>"/></div>
-					<div class="header"><span>Телефон</span></div>
-					<div class="content"><input class="input" size="85" type="text" name="managerphone" value="<%=selectedManager.getPhonenumber() %>"/></div>
+					<div class="mngpic"><img alt="Photo" src="/OfferMaker/config/regions/pic/<%=selectedManager.getNick() + ".jpeg" %>"></div>
+					<div class="header headermng"><span>Имя</span></div><br>
+					<div class="content contentmng"><input class="input" size="50" type="text" name="managername" value="<%=selectedManager.getName() %>"/></div><br>
+					<div class="header headermng"><span>Должность</span></div><br>
+					<div class="content contentmng"><input class="input" size="50" type="text" name="managerposition" value="<%=selectedManager.getPosition() %>"/></div><br>
+					<div class="header headermng"><span>Почта</span></div><br>
+					<div class="content contentmng"><input class="input" size="50" type="text" name="email" value="<%=selectedManager.getEmail() %>"/></div><br>
+					<div class="header headermng"><span>Телефон</span></div><br>
+					<div class="content contentmng"><input class="input" size="50" type="text" name="phonenumber" value="<%=selectedManager.getPhonenumber() %>"/></div>
 			<%}%>
 			
 			<div class="header"><h2>Название компании клиента</h2></div>
