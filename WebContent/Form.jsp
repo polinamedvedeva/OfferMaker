@@ -209,9 +209,9 @@ String typeAttrib = request.getParameter("type");
 					<div class="header headermng"><span>Должность</span></div><br>
 					<div class="content contentmng"><input class="input" size="50" type="text" name="managerposition" value="<%=selectedManager.getPosition() %>"/></div><br>
 					<div class="header headermng"><span>Почта</span></div><br>
-					<div class="content contentmng"><input class="input" size="50" type="text" name="email" value="<%=selectedManager.getEmail() %>"/></div><br>
+					<div class="content contentmng"><input class="input" size="50" type="text" name="manageremail" value="<%=selectedManager.getEmail() %>"/></div><br>
 					<div class="header headermng"><span>Телефон</span></div><br>
-					<div class="content contentmng"><input class="input" size="50" type="text" name="phonenumber" value="<%=selectedManager.getPhonenumber() %>"/></div>
+					<div class="content contentmng"><input class="input" size="50" type="text" name="managerphone" value="<%=selectedManager.getPhonenumber() %>"/></div>
 			<%}%>
 			
 			<div class="header"><h2>Название компании клиента</h2></div>

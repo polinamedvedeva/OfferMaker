@@ -44,7 +44,6 @@ public class PromoCommBuilder {
 		
 		String picFolder = root + File.separator + "config" + File.separator + "regions" + File.separator + "pic" + File.separator;
 		
-		//�������� ������
 		Path tempPath = Paths.get(templatePath);
 		Path resultikPath = Paths.get(resultPath);
 	    try {
@@ -54,16 +53,13 @@ public class PromoCommBuilder {
 			return 1;
 		}
 	    
-	    //��������� �������� ���������
-	    System.out.println(values.get("managernick"));
 	    ZipReplacer.zipFileReplace(resultPath, "word/media/image9.jpeg", picFolder + values.get("placeholdermanagernick") + ".jpeg");
 	    
-		//����������� ���������� ������, �������� ��� docx4j
 	    Random r = new Random(System.currentTimeMillis());
 	    int randforname = r.nextInt();
 	    String docxmlname = tempXMLPath.replace("document.xml", "" + randforname);
 	    File docxmlfile = new File(docxmlname);
-		ZipReplacer.getFileFromZip(resultPath, "word/document.xml", docxmlname); //������� document.xml �� docx
+		ZipReplacer.getFileFromZip(resultPath, "word/document.xml", docxmlname);
 		try {
 			ZipReplacer.regexpReplacer(docxmlname, "<w:t>(placeholder.*?)</w:t>", "<w:t>\\$\\{$1\\}</w:t>");
 		} catch (IOException e2) {
@@ -73,12 +69,11 @@ public class PromoCommBuilder {
 		ZipReplacer.zipFileReplace(resultPath, "word/document.xml", docxmlname);
 		docxmlfile.delete();
 		
-		//�������� � �����
 		randforname = r.nextInt();
 	    String relsname = tempXMLPath.replace("document.xml", "" + randforname);
 	    File relsfile = new File(relsname);
 	    
-		ZipReplacer.getFileFromZip(resultPath, "word/_rels/document.xml.rels", relsname); //������� document.xml.rels �� docx
+		ZipReplacer.getFileFromZip(resultPath, "word/_rels/document.xml.rels", relsname);
 		try {
 			ZipReplacer.regexpReplacer(relsname, "//дельта-юг.рф", "//" + values.get("placeholderdeltasite").replace("www.", ""));
 		} catch (IOException e2) {
@@ -89,18 +84,16 @@ public class PromoCommBuilder {
 		relsfile.delete();
 		
 
-		//��������� CSV � �������� ���� �� �������
 		CSVReader csvReader = new CSVReader(csvPath);
 		
 		Table table = new Table();
 		Line line;
-		csvReader.skipLine();//������� ������������
+		csvReader.skipLine();
 		while((line = csvReader.readLine()) != null){
 			table.addLine(line);
 		}
 		csvReader.close();
 		
-		//��������� ������������� ���� ������� 
 		PromoDOCXworker dw = null;
 		try {
 			System.out.println(templatePath + "\n" + resultPath);
@@ -112,7 +105,7 @@ public class PromoCommBuilder {
 			e.printStackTrace();
 			return 1;
 		}
-		//��������� �������
+
 		for(int i = 0; i < table.getSize(); i++){
 			if(i == table.getSize() - 1){
 				dw.addLastRowToTable(table.getLine(i));
@@ -120,7 +113,7 @@ public class PromoCommBuilder {
 				dw.addRowToTable(table.getLine(i), (i % 2 == 0));
 			}
 		}
-		//"�� ������� �����..."
+
 		P auditParagraph = null;
 	    try {
 	    	auditParagraph = dw.findByPlaceholderParagraph(PromoDOCXworker.getAllElementFromObject(dw.getMainDocPart(), P.class), "phaudit");
@@ -131,14 +124,14 @@ public class PromoCommBuilder {
 	    Text at = (Text) PromoDOCXworker.getAllElementFromObject(auditParagraph, Text.class).get(0);
 	    at.setValue(audittext);
 		
-	    //������
+
 	    List<Object> hls = PromoDOCXworker.getAllElementFromObject(dw.getMainDocPart(), Hyperlink.class);
 	    Relationship rel = dw.getMainDocPart().getRelationshipsPart().getRelationshipByID(((Hyperlink) hls.get(0)).getId());
 	    rel.setTarget("mailto:" + values.get("placeholderemail"));
-	    //���������
+
 	    List<Object> lt = PromoDOCXworker.getAllElementFromObject(dw.templateTable, Text.class);
 	    values.put("placeholderauditory", ((Text)lt.get(lt.size()-1)).getValue());
-	    //������
+
 	    String[] regionArray = regiontext.split("\n");  
 	    if(regionArray.length > 0){
 	    	P regionParagraph = null;
@@ -158,7 +151,7 @@ public class PromoCommBuilder {
 		    	dw.getMainDocPart().getContent().add(regionParagraphIndex++, p);
 		    }
 	    }
-	    //�����
+
 	    List<Object> footerContent = dw.getFooterPart().getContent();
 	    Text t = (Text) PromoDOCXworker.getAllElementFromObject(footerContent.get(2), Text.class).get(0);
 	    t.setValue(values.get("placeholderaddress"));
@@ -166,18 +159,17 @@ public class PromoCommBuilder {
 	    t.setValue(values.get("placeholderphonenumbers"));
 	    t = (Text) PromoDOCXworker.getAllElementFromObject(footerContent.get(4), Text.class).get(0);
 	    t.setValue(values.get("placeholderdeltasite"));
-	    //��������� ������
+
 		try {
 			dw.getMainDocPart().variableReplace(values);
 		} catch (JAXBException | Docx4JException e) {
 			e.printStackTrace();
 			return 1;
 		}
-		//���������
+
 		dw.writeDocx();
 		System.out.println("Готово; " + (System.currentTimeMillis() - startTime) + " мс.");
-		return 0;
-		
+		return 0;	
 	}
 	
 }
